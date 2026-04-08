@@ -1,27 +1,60 @@
+"use client";
+
+import { useMemo } from 'react';
+import { useAtlasStore } from '@/store/useAtlasStore';
+import Globe from '@/components/Globe';
+import SearchBar from '@/components/UI/SearchBar';
+import { FALLBACK_COUNTRY_COLI, FALLBACK_STATE_RPP } from '@/lib/api-clients';
+
 export default function Home() {
+  const { selectedLocation, selectedLocationName, setSelectedLocation } = useAtlasStore();
+
+  // Build combined location list for the search bar
+  const locations = useMemo(() => {
+    const countries = Object.entries(FALLBACK_COUNTRY_COLI).map(([code, { name }]) => ({
+      code,
+      name,
+    }));
+    const states = Object.entries(FALLBACK_STATE_RPP).map(([code, { name }]) => ({
+      code,
+      name,
+    }));
+    return [...countries, ...states].sort((a, b) => a.name.localeCompare(b.name));
+  }, []);
+
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen gap-8 px-4">
-      <div className="flex flex-col items-center gap-4 text-center">
-        <p className="text-neon-blue text-xs tracking-widest uppercase">
-          &gt; Loading Atlas_v0.1...
-        </p>
-        <h1 className="text-neon-green text-2xl leading-loose">
-          THE WEALTH ATLAS
-        </h1>
-        <p className="text-neon-green/60 text-xs leading-loose max-w-xs">
-          How much does it cost to be wealthy — everywhere on Earth?
-        </p>
-      </div>
+    <main className="flex flex-col min-h-screen">
+      {/* Header */}
+      <header className="flex items-center justify-between px-6 py-3 border-b border-neon-green/20 shrink-0">
+        <h1 className="text-neon-green text-xs tracking-wider">THE WEALTH ATLAS</h1>
+        <div className="flex items-center gap-4">
+          <SearchBar
+            locations={locations}
+            onSelect={(code, name) => setSelectedLocation(code, name)}
+          />
+          <span className="text-neon-blue text-xs hidden sm:block">&gt; v0.1_</span>
+        </div>
+      </header>
 
-      <div className="border border-neon-green/30 px-8 py-6 text-center">
-        <p className="text-neon-green/50 text-xs leading-loose">
-          [ GLOBE INITIALIZING ]
-        </p>
-      </div>
+      {/* Globe */}
+      <section className="flex-1" style={{ minHeight: '75vh' }}>
+        <Globe
+          selectedISO={selectedLocation}
+          onCountrySelect={(iso, name) => setSelectedLocation(iso, name)}
+        />
+      </section>
 
-      <p className="text-neon-green/30 text-xs">
-        &gt; Select a location to begin_
-      </p>
+      {/* Selected location bar */}
+      <footer className="shrink-0 px-6 py-3 border-t border-neon-green/20 font-pixel text-xs min-h-[44px] flex items-center">
+        {selectedLocationName ? (
+          <span className="text-neon-blue">
+            &gt; {selectedLocationName}{' '}
+            <span className="text-neon-green/50">[{selectedLocation}]</span>
+          </span>
+        ) : (
+          <span className="text-neon-green/30">&gt; Click a country to explore_</span>
+        )}
+      </footer>
     </main>
   );
 }
