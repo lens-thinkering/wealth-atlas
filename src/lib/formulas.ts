@@ -4,11 +4,11 @@
  */
 export const BASE_WEALTH_LEVELS = {
   1: { name: "Paycheck Wealth", amount: 0 },
-  2: { name: "Grocery Wealth", amount: 0 },
-  3: { name: "Restaurant Wealth", amount: 0 },
-  4: { name: "Travel Wealth", amount: 0 },
-  5: { name: "Time Wealth", amount: 0 },
-  6: { name: "Philanthropic Wealth", amount: 0 },
+  2: { name: "Grocery prices matter less", amount: 10_000 },
+  3: { name: "Restaurant prices matter less", amount: 100_000 },
+  4: { name: "Vacation prices matter less", amount: 1_000_000 },
+  5: { name: "Home prices matter less", amount: 10_000_000 },
+  6: { name: "What are prices?", amount: 100_000_000 },
 } as const;
 
 export type WealthLevel = keyof typeof BASE_WEALTH_LEVELS;
