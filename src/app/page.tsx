@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { useAtlasStore } from '@/store/useAtlasStore';
 import Globe from '@/components/Globe';
 import SearchBar from '@/components/UI/SearchBar';
+import Simulation from '@/components/Simulation';
 import { FALLBACK_COUNTRY_COLI, FALLBACK_STATE_RPP } from '@/lib/api-clients';
 
 export default function Home() {
@@ -60,6 +61,9 @@ export default function Home() {
       <section className="flex-1" style={{ minHeight: '75vh' }}>
         <Globe />
       </section>
+
+      {/* Simulation */}
+      <Simulation />
 
       {/* Status footer */}
       <footer className="shrink-0 px-6 py-3 border-t border-neon-green/20 font-pixel text-xs min-h-[44px] flex items-center gap-4">
